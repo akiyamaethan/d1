@@ -27,5 +27,7 @@ function automaticIncrementer() {
 function updateBearDisplay() {
   if (bearDisplay) {
     bearDisplay.textContent = currentBears.toString();
+    requestAnimationFrame(updateBearDisplay);
   }
 }
+requestAnimationFrame(updateBearDisplay);
