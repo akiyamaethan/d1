@@ -24,7 +24,7 @@ const tier1UpgradeButton = document.getElementById(
 ) as HTMLButtonElement;
 const tier1UpgradeDisplay = document.getElementById("tier1UpgradeDisplay");
 
-const automaticIncrement: number = 0;
+let automaticIncrement: number = 0;
 const clickIncrement: number = 1;
 let currentBears: number = 0;
 let currentTier1Upgrades: number = 0;
@@ -39,11 +39,13 @@ if (bearButton && bearDisplay) {
   });
 }
 
+// Event listener for tier 1 upgrade button click
 if (tier1UpgradeButton && tier1UpgradeDisplay) {
   tier1UpgradeButton.addEventListener("click", () => {
     if (currentBears >= 10) {
       currentBears -= 10;
       currentTier1Upgrades += 1;
+      automaticIncrement += 1;
       tier1UpgradeDisplay.textContent = currentTier1Upgrades.toString();
     }
   });
