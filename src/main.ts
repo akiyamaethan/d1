@@ -9,24 +9,31 @@ const bearButton = document.getElementById("bearButton");
 const bearDisplay = document.getElementById("bearDisplay");
 
 const automaticIncrement: number = 1;
+const clickIncrement: number = 1;
 let currentBears: number = 0;
-const _automaticClicking = setInterval(automaticIncrementer, 1000);
+let prevTime = performance.now();
+let currentTime = performance.now();
 
+
+// Event listener for bear button click
 if (bearButton && bearDisplay) {
-  bearDisplay.textContent = currentBears.toString();
   bearButton.addEventListener("click", () => {
-    currentBears += 1;
+    currentBears += clickIncrement;
     updateBearDisplay();
   });
 }
 
-function automaticIncrementer() {
-  currentBears += automaticIncrement;
+function automaticIncrementer(deltaTime: number) {
+  currentBears += (deltaTime/1000) * automaticIncrement;
 }
 
 function updateBearDisplay() {
   if (bearDisplay) {
-    bearDisplay.textContent = currentBears.toString();
+    currentTime = performance.now();
+    const deltaTime = currentTime - prevTime;
+    automaticIncrementer(deltaTime);
+    prevTime = currentTime;
+    bearDisplay.textContent = currentBears.toFixed(2);
     requestAnimationFrame(updateBearDisplay);
   }
 }
