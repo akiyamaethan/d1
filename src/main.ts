@@ -1,5 +1,7 @@
 import "./style.css";
 
+//Hi Section activity commit
+
 document.body.innerHTML = `
 
   <button
@@ -12,6 +14,7 @@ document.body.innerHTML = `
     >Purchase Autoclicker</button>
   <button>upgrade</button>
   <button>upgrade</button>
+  <p>bps: <span id="bpsDisplay">0</span></p> 
   <p>Bears: <span id="bearDisplay">0</span></p>
   <p>🖱️:<span id="tier1UpgradeDisplay">0</span></p>
 
@@ -19,6 +22,7 @@ document.body.innerHTML = `
 
 const bearButton = document.getElementById("bearButton");
 const bearDisplay = document.getElementById("bearDisplay");
+//const bpsDisplay = document.getElementById("bpsDisplay");
 const tier1UpgradeButton = document.getElementById(
   "tier1UpgradeButton",
 ) as HTMLButtonElement;
