@@ -11,15 +11,15 @@ document.body.innerHTML = `
   <button
     id="tier1UpgradeButton"
     disabled
-    >Purchase Autoclicker A</button>
+    >Purchase Autoclicker for <span id="tier1UpgradePrice">10</span> bears</button>
   <button
     id="tier2UpgradeButton"
     disabled
-    >Learn to Make Bears B</button>
+    >Learn to Make Bears for <span id="tier2UpgradePrice">100</span> bears</button>
   <button
     id="tier3UpgradeButton"
     disabled
-    >Increase Click Strength</button>
+    >Increase Click Strength for <span id="tier3UpgradePrice">100</span> bears</button>
   <p>Bears: <span id="bearDisplay">0</span></p>
   <p>Idle bps: <span id="bpsDisplay">0</span></p> 
   <p>
@@ -45,9 +45,15 @@ const tier3UpgradeButton = document.getElementById(
 const tier1UpgradeDisplay = document.getElementById("tier1UpgradeDisplay");
 const tier2UpgradeDisplay = document.getElementById("tier2UpgradeDisplay");
 const tier3UpgradeDisplay = document.getElementById("tier3UpgradeDisplay");
+const tier1PriceDisplay = document.getElementById("tier1UpgradePrice");
+const tier2PriceDisplay = document.getElementById("tier2UpgradePrice");
+const tier3PriceDisplay = document.getElementById("tier3UpgradePrice");
 let currentTier1Upgrades: number = 0;
+let tier1UpgradePrice: number = 10;
 let currentTier2Upgrades: number = 0;
+let tier2UpgradePrice: number = 100;
 let currentTier3Upgrades: number = 0;
+let tier3UpgradePrice: number = 1000;
 
 let automaticIncrement: number = 0;
 let clickIncrement: number = 1;
@@ -65,37 +71,47 @@ if (bearButton && bearDisplay) {
 }
 
 // Event listener for tier 1 upgrade button click
-if (tier1UpgradeButton && tier1UpgradeDisplay && bpsDisplay) {
+if (
+  tier1UpgradeButton && tier1UpgradeDisplay && bpsDisplay && tier1PriceDisplay
+) {
   tier1UpgradeButton.addEventListener("click", () => {
-    if (currentBears >= 10) {
-      currentBears -= 10;
+    if (currentBears >= tier1UpgradePrice) {
+      currentBears -= tier1UpgradePrice;
+      tier1UpgradePrice = Math.floor(tier1UpgradePrice * 1.2);
       currentTier1Upgrades += 1;
       automaticIncrement += 1;
       tier1UpgradeDisplay.textContent = currentTier1Upgrades.toString();
       bpsDisplay.textContent = automaticIncrement.toString();
+      tier1PriceDisplay.textContent = tier1UpgradePrice.toString();
     }
   });
 }
 
-if (tier2UpgradeButton && tier2UpgradeDisplay && bpsDisplay) {
+if (
+  tier2UpgradeButton && tier2UpgradeDisplay && bpsDisplay && tier2PriceDisplay
+) {
   tier2UpgradeButton.addEventListener("click", () => {
-    if (currentBears >= 100) {
-      currentBears -= 100;
+    if (currentBears >= tier2UpgradePrice) {
+      currentBears -= tier2UpgradePrice;
+      tier2UpgradePrice = Math.floor(tier2UpgradePrice * 1.2);
       currentTier2Upgrades += 1;
       automaticIncrement += 5;
       tier2UpgradeDisplay.textContent = currentTier2Upgrades.toString();
       bpsDisplay.textContent = automaticIncrement.toString();
+      tier2PriceDisplay.textContent = tier2UpgradePrice.toString();
     }
   });
 }
 
-if (tier3UpgradeButton && tier3UpgradeDisplay) {
+if (tier3UpgradeButton && tier3UpgradeDisplay && tier3PriceDisplay) {
   tier3UpgradeButton.addEventListener("click", () => {
-    if (currentBears >= 1000) {
-      currentBears -= 1000;
+    if (currentBears >= tier3UpgradePrice) {
+      currentBears -= tier3UpgradePrice;
+      tier3UpgradePrice = Math.floor(tier3UpgradePrice * 1.2);
       currentTier3Upgrades += 1;
       clickIncrement += 1;
       tier3UpgradeDisplay.textContent = currentTier3Upgrades.toString();
+      tier3PriceDisplay.textContent = tier3UpgradePrice.toString();
     }
   });
 }
@@ -119,16 +135,22 @@ requestAnimationFrame(updateBearDisplay);
 function updateUpgradesDisplay() {
   if (tier1UpgradeButton && tier2UpgradeButton && tier3UpgradeButton) {
     //check for upgrade 1
-    if (currentBears >= 10) {
+    if (currentBears >= tier1UpgradePrice) {
       tier1UpgradeButton.disabled = false;
+    } else {
+      tier1UpgradeButton.disabled = true;
     }
     //check for upgrade 2
-    if (currentBears >= 100) {
+    if (currentBears >= tier2UpgradePrice) {
       tier2UpgradeButton.disabled = false;
+    } else {
+      tier2UpgradeButton.disabled = true;
     }
     //check for upgrade 3
-    if (currentBears >= 1000) {
+    if (currentBears >= tier3UpgradePrice) {
       tier3UpgradeButton.disabled = false;
+    } else {
+      tier3UpgradeButton.disabled = true;
     }
     requestAnimationFrame(updateUpgradesDisplay);
   }
