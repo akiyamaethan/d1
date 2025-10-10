@@ -3,3 +3,22 @@
   vertical-align: top;
   border: 1px solid salmon;
 }
+
+@keyframes bearButtonClick {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(0.95);
+  }
+  60% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.bear-button-animate {
+  animation: bearButtonClick 0.1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}

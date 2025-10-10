@@ -3,15 +3,18 @@ import "./style.css";
 //Hi Section activity commit
 
 document.body.innerHTML = `
-
+  <center>
+  <h1>Bear Hugger</h1>
+  <p>Click (hug) teddy bears to wake them up!</p>
   <button
     id="bearButton"
     style="font-size: 100px; background: none; border: none; cursor: pointer;"
-  >🐻</button>
+  >🧸</button>
+  <center>
   <button
     id="tier1UpgradeButton"
     disabled
-    >Purchase Autoclicker for <span id="tier1UpgradePrice">10</span> bears</button>
+    >Purchase Autohugger for <span id="tier1UpgradePrice">10</span> bears</button>
   <button
     id="tier2UpgradeButton"
     disabled
@@ -19,7 +22,7 @@ document.body.innerHTML = `
   <button
     id="tier3UpgradeButton"
     disabled
-    >Increase Click Strength for <span id="tier3UpgradePrice">100</span> bears</button>
+    >Increase Hug Strength for <span id="tier3UpgradePrice">100</span> bears</button>
   <p>Bears: <span id="bearDisplay">0</span></p>
   <p>Idle bps: <span id="bpsDisplay">0</span></p> 
   <p>
@@ -27,7 +30,6 @@ document.body.innerHTML = `
     🧶: <span id="tier2UpgradeDisplay">0</span>
     💪: <span id="tier3UpgradeDisplay">0</span>
   </p>
-
   `;
 
 const bearButton = document.getElementById("bearButton");
@@ -65,6 +67,10 @@ let currentTime = performance.now();
 // Event listener for bear button click
 if (bearButton && bearDisplay) {
   bearButton.addEventListener("click", () => {
+    bearButton.classList.add("bear-button-animate");
+    bearButton.addEventListener("animationend", () => {
+      bearButton.classList.remove("bear-button-animate");
+    }, { once: true });
     currentBears += clickIncrement;
     updateBearDisplay();
   });
