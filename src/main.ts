@@ -16,12 +16,16 @@ document.body.innerHTML = `
     id="tier2UpgradeButton"
     disabled
     >Learn to Make Bears B</button>
-  <button>upgrade</button>
+  <button
+    id="tier3UpgradeButton"
+    disabled
+    >Increase Click Strength</button>
   <p>Bears: <span id="bearDisplay">0</span></p>
   <p>Idle bps: <span id="bpsDisplay">0</span></p> 
   <p>
     🖱️:<span id="tier1UpgradeDisplay">0</span>
     🧶: <span id="tier2UpgradeDisplay">0</span>
+    💪: <span id="tier3UpgradeDisplay">0</span>
   </p>
 
   `;
@@ -35,14 +39,20 @@ const tier1UpgradeButton = document.getElementById(
 const tier2UpgradeButton = document.getElementById(
   "tier2UpgradeButton",
 ) as HTMLButtonElement;
+const tier3UpgradeButton = document.getElementById(
+  "tier3UpgradeButton",
+) as HTMLButtonElement;
 const tier1UpgradeDisplay = document.getElementById("tier1UpgradeDisplay");
 const tier2UpgradeDisplay = document.getElementById("tier2UpgradeDisplay");
-
-let automaticIncrement: number = 0;
-const clickIncrement: number = 1;
-let currentBears: number = 0;
+const tier3UpgradeDisplay = document.getElementById("tier3UpgradeDisplay");
 let currentTier1Upgrades: number = 0;
 let currentTier2Upgrades: number = 0;
+let currentTier3Upgrades: number = 0;
+
+let automaticIncrement: number = 0;
+let clickIncrement: number = 1;
+let currentBears: number = 0;
+
 let prevTime = performance.now();
 let currentTime = performance.now();
 
@@ -79,6 +89,17 @@ if (tier2UpgradeButton && tier2UpgradeDisplay && bpsDisplay) {
   });
 }
 
+if (tier3UpgradeButton && tier3UpgradeDisplay) {
+  tier3UpgradeButton.addEventListener("click", () => {
+    if (currentBears >= 1000) {
+      currentBears -= 1000;
+      currentTier3Upgrades += 1;
+      clickIncrement += 1;
+      tier3UpgradeDisplay.textContent = currentTier3Upgrades.toString();
+    }
+  });
+}
+
 function automaticIncrementer(deltaTime: number) {
   currentBears += (deltaTime / 1000) * automaticIncrement;
 }
@@ -96,16 +117,20 @@ function updateBearDisplay() {
 requestAnimationFrame(updateBearDisplay);
 
 function updateUpgradesDisplay() {
-  if (tier1UpgradeButton && tier1UpgradeDisplay) {
+  if (tier1UpgradeButton && tier2UpgradeButton && tier3UpgradeButton) {
     //check for upgrade 1
     if (currentBears >= 10) {
       tier1UpgradeButton.disabled = false;
     }
-    requestAnimationFrame(updateUpgradesDisplay);
     //check for upgrade 2
     if (currentBears >= 100) {
       tier2UpgradeButton.disabled = false;
     }
+    //check for upgrade 3
+    if (currentBears >= 1000) {
+      tier3UpgradeButton.disabled = false;
+    }
+    requestAnimationFrame(updateUpgradesDisplay);
   }
 }
 requestAnimationFrame(updateUpgradesDisplay);
