@@ -18,17 +18,17 @@ document.body.innerHTML = `
   <button
     id="tier2UpgradeButton"
     disabled
-    >Learn to Make Bears for <span id="tier2UpgradePrice">100</span> bears</button>
+    >Increase Hug Strength for <span id="tier2UpgradePrice">100</span> bears</button>
   <button
     id="tier3UpgradeButton"
     disabled
-    >Increase Hug Strength for <span id="tier3UpgradePrice">100</span> bears</button>
+    >Join a Sewing Circle for <span id="tier3UpgradePrice">100</span> bears</button>
   <p>Bears: <span id="bearDisplay">0</span></p>
   <p>Idle bps: <span id="bpsDisplay">0</span></p> 
   <p>
     🖱️:<span id="tier1UpgradeDisplay">0</span>
-    🧶: <span id="tier2UpgradeDisplay">0</span>
-    💪: <span id="tier3UpgradeDisplay">0</span>
+    💪: <span id="tier2UpgradeDisplay">0</span>
+    🧶: <span id="tier3UpgradeDisplay">0</span>
   </p>
   `;
 
@@ -64,7 +64,89 @@ let currentBears: number = 0;
 let prevTime = performance.now();
 let currentTime = performance.now();
 
-// Event listener for bear button click
+interface Upgrade {
+  name: string;
+  price: number;
+  bpsIncrease: number;
+  clickIncrease: number;
+  amount: number;
+  upgradeButton: HTMLButtonElement;
+  upgradeDisplay: HTMLElement;
+  upgradePriceDisplay: HTMLElement;
+  onClick: () => void;
+}
+
+const availableUpgrades: Upgrade[] = [
+  {
+    name: "Autohugger",
+    price: 10,
+    bpsIncrease: .2,
+    clickIncrease: 0,
+    amount: 0,
+    upgradeButton: document.getElementById(
+      "tier1UpgradeButton",
+    ) as HTMLButtonElement,
+    upgradeDisplay: document.getElementById(
+      "tier1UpgradeDisplay",
+    ) as HTMLElement,
+    upgradePriceDisplay: document.getElementById(
+      "tier1UpgradePrice",
+    ) as HTMLElement,
+    onClick: () => handleUpgradeClick(availableUpgrades[0]),
+  },
+  {
+    name: "Hug Strength",
+    price: 100,
+    bpsIncrease: 0,
+    clickIncrease: 1,
+    amount: 0,
+    upgradeButton: document.getElementById(
+      "tier2UpgradeButton",
+    ) as HTMLButtonElement,
+    upgradeDisplay: document.getElementById(
+      "tier2UpgradeDisplay",
+    ) as HTMLElement,
+    upgradePriceDisplay: document.getElementById(
+      "tier2UpgradePrice",
+    ) as HTMLElement,
+    onClick: () => handleUpgradeClick(availableUpgrades[1]),
+  },
+  {
+    name: "Sewing Circle",
+    price: 1000,
+    bpsIncrease: 5,
+    clickIncrease: 0,
+    amount: 0,
+    upgradeButton: document.getElementById(
+      "tier3UpgradeButton",
+    ) as HTMLButtonElement,
+    upgradeDisplay: document.getElementById(
+      "tier3UpgradeDisplay",
+    ) as HTMLElement,
+    upgradePriceDisplay: document.getElementById(
+      "tier3UpgradePrice",
+    ) as HTMLElement,
+    onClick: () => handleUpgradeClick(availableUpgrades[2]),
+  },
+];
+
+function handleUpgradeClick(upgrade: Upgrade) {
+  if (currentBears >= upgrade.price) {
+    currentBears -= upgrade.price;
+    upgrade.price = Math.floor(upgrade.price * 1.2);
+    upgrade.amount += 1;
+    automaticIncrement += upgrade.bpsIncrease;
+    clickIncrement += upgrade.clickIncrease;
+    upgrade.upgradeDisplay.textContent = upgrade.amount.toString();
+    bpsDisplay!.textContent = automaticIncrement.toFixed(2);
+    upgrade.upgradePriceDisplay.textContent = upgrade.price.toString();
+  }
+}
+
+availableUpgrades.forEach((upgrade) => {
+  upgrade.upgradeButton.addEventListener("click", () => upgrade.onClick());
+});
+
 if (bearButton && bearDisplay) {
   bearButton.addEventListener("click", () => {
     bearButton.classList.add("bear-button-animate");
@@ -73,52 +155,6 @@ if (bearButton && bearDisplay) {
     }, { once: true });
     currentBears += clickIncrement;
     updateBearDisplay();
-  });
-}
-
-// Event listener for tier 1 upgrade button click
-if (
-  tier1UpgradeButton && tier1UpgradeDisplay && bpsDisplay && tier1PriceDisplay
-) {
-  tier1UpgradeButton.addEventListener("click", () => {
-    if (currentBears >= tier1UpgradePrice) {
-      currentBears -= tier1UpgradePrice;
-      tier1UpgradePrice = Math.floor(tier1UpgradePrice * 1.2);
-      currentTier1Upgrades += 1;
-      automaticIncrement += 1;
-      tier1UpgradeDisplay.textContent = currentTier1Upgrades.toString();
-      bpsDisplay.textContent = automaticIncrement.toString();
-      tier1PriceDisplay.textContent = tier1UpgradePrice.toString();
-    }
-  });
-}
-
-if (
-  tier2UpgradeButton && tier2UpgradeDisplay && bpsDisplay && tier2PriceDisplay
-) {
-  tier2UpgradeButton.addEventListener("click", () => {
-    if (currentBears >= tier2UpgradePrice) {
-      currentBears -= tier2UpgradePrice;
-      tier2UpgradePrice = Math.floor(tier2UpgradePrice * 1.2);
-      currentTier2Upgrades += 1;
-      automaticIncrement += 5;
-      tier2UpgradeDisplay.textContent = currentTier2Upgrades.toString();
-      bpsDisplay.textContent = automaticIncrement.toString();
-      tier2PriceDisplay.textContent = tier2UpgradePrice.toString();
-    }
-  });
-}
-
-if (tier3UpgradeButton && tier3UpgradeDisplay && tier3PriceDisplay) {
-  tier3UpgradeButton.addEventListener("click", () => {
-    if (currentBears >= tier3UpgradePrice) {
-      currentBears -= tier3UpgradePrice;
-      tier3UpgradePrice = Math.floor(tier3UpgradePrice * 1.2);
-      currentTier3Upgrades += 1;
-      clickIncrement += 1;
-      tier3UpgradeDisplay.textContent = currentTier3Upgrades.toString();
-      tier3PriceDisplay.textContent = tier3UpgradePrice.toString();
-    }
   });
 }
 
@@ -139,26 +175,14 @@ function updateBearDisplay() {
 requestAnimationFrame(updateBearDisplay);
 
 function updateUpgradesDisplay() {
-  if (tier1UpgradeButton && tier2UpgradeButton && tier3UpgradeButton) {
-    //check for upgrade 1
-    if (currentBears >= tier1UpgradePrice) {
-      tier1UpgradeButton.disabled = false;
+  availableUpgrades.forEach((upgrade) => {
+    if (currentBears >= upgrade.price) {
+      upgrade.upgradeButton.disabled = false;
     } else {
-      tier1UpgradeButton.disabled = true;
+      upgrade.upgradeButton.disabled = true;
     }
-    //check for upgrade 2
-    if (currentBears >= tier2UpgradePrice) {
-      tier2UpgradeButton.disabled = false;
-    } else {
-      tier2UpgradeButton.disabled = true;
-    }
-    //check for upgrade 3
-    if (currentBears >= tier3UpgradePrice) {
-      tier3UpgradeButton.disabled = false;
-    } else {
-      tier3UpgradeButton.disabled = true;
-    }
-    requestAnimationFrame(updateUpgradesDisplay);
-  }
+  });
+  requestAnimationFrame(updateUpgradesDisplay);
 }
+
 requestAnimationFrame(updateUpgradesDisplay);
