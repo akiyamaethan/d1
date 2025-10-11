@@ -35,27 +35,6 @@ document.body.innerHTML = `
 const bearButton = document.getElementById("bearButton");
 const bearDisplay = document.getElementById("bearDisplay");
 const bpsDisplay = document.getElementById("bpsDisplay");
-const tier1UpgradeButton = document.getElementById(
-  "tier1UpgradeButton",
-) as HTMLButtonElement;
-const tier2UpgradeButton = document.getElementById(
-  "tier2UpgradeButton",
-) as HTMLButtonElement;
-const tier3UpgradeButton = document.getElementById(
-  "tier3UpgradeButton",
-) as HTMLButtonElement;
-const tier1UpgradeDisplay = document.getElementById("tier1UpgradeDisplay");
-const tier2UpgradeDisplay = document.getElementById("tier2UpgradeDisplay");
-const tier3UpgradeDisplay = document.getElementById("tier3UpgradeDisplay");
-const tier1PriceDisplay = document.getElementById("tier1UpgradePrice");
-const tier2PriceDisplay = document.getElementById("tier2UpgradePrice");
-const tier3PriceDisplay = document.getElementById("tier3UpgradePrice");
-let currentTier1Upgrades: number = 0;
-let tier1UpgradePrice: number = 10;
-let currentTier2Upgrades: number = 0;
-let tier2UpgradePrice: number = 100;
-let currentTier3Upgrades: number = 0;
-let tier3UpgradePrice: number = 1000;
 
 let automaticIncrement: number = 0;
 let clickIncrement: number = 1;
