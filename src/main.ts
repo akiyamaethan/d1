@@ -10,26 +10,54 @@ document.body.innerHTML = `
     id="bearButton"
     style="font-size: 100px; background: none; border: none; cursor: pointer;"
   >🧸</button>
-  <center>
-  <button
-    id="tier1UpgradeButton"
-    disabled
+  <section>
+  <div>
+    <button
+      id="tier1UpgradeButton"
+      disabled
     >Purchase Autohugger for <span id="tier1UpgradePrice">10</span> bears</button>
-  <button
-    id="tier2UpgradeButton"
-    disabled
+    <span id="tier1UpgradeDescription"></span>
+  </div>
+  </div>
+    <button
+      id="tier2UpgradeButton"
+      disabled
     >Increase Hug Strength for <span id="tier2UpgradePrice">100</span> bears</button>
+    <span id="tier2UpgradeDescription"></span>
+  </div>
+  <div>
+    <button
+      id="tier3UpgradeButton"
+      disabled
+    >Join a Sewing Circle for <span id="tier3UpgradePrice">500</span> bears</button>
+    <span id="tier3UpgradeDescription"></span>
+  </div>
   <button
-    id="tier3UpgradeButton"
-    disabled
-    >Join a Sewing Circle for <span id="tier3UpgradePrice">100</span> bears</button>
+      id="tier4UpgradeButton"
+      disabled
+    >Open a Bear Factory for <span id="tier4UpgradePrice">1000</span> bears</button>
+    <span id="tier4UpgradeDescription"></span>
+  </button>
+  <div>
+  <button
+      id="tier5UpgradeButton"
+      disabled
+    >Invest in the Fur Exchange for <span id="tier5UpgradePrice">2000</span> bears</button>
+    <span id="tier5UpgradeDescription"></span>
+  </button>
+  </div>
+  </section>
   <p>Bears: <span id="bearDisplay">0</span></p>
-  <p>Idle bps: <span id="bpsDisplay">0</span></p> 
+  <p>Idle bps: <span id="bpsDisplay">0</span></p>
+  
   <p>
     🖱️:<span id="tier1UpgradeDisplay">0</span>
     💪: <span id="tier2UpgradeDisplay">0</span>
     🧶: <span id="tier3UpgradeDisplay">0</span>
+    🏭: <span id="tier4UpgradeDisplay">0</span>
+    💱: <span id="tier5UpgradeDisplay">0</span>
   </p>
+  </center>
   `;
 
 const bearButton = document.getElementById("bearButton");
@@ -45,6 +73,7 @@ let currentTime = performance.now();
 
 interface Upgrade {
   name: string;
+  description: string;
   price: number;
   bpsIncrease: number;
   clickIncrease: number;
@@ -52,12 +81,14 @@ interface Upgrade {
   upgradeButton: HTMLButtonElement;
   upgradeDisplay: HTMLElement;
   upgradePriceDisplay: HTMLElement;
+  upgradeDescripton: HTMLElement;
   onClick: () => void;
 }
 
 const availableUpgrades: Upgrade[] = [
   {
     name: "Autohugger",
+    description: "Hire a child to hug 0.2 bps for you.",
     price: 10,
     bpsIncrease: .2,
     clickIncrease: 0,
@@ -71,10 +102,15 @@ const availableUpgrades: Upgrade[] = [
     upgradePriceDisplay: document.getElementById(
       "tier1UpgradePrice",
     ) as HTMLElement,
+    upgradeDescripton: document.getElementById(
+      "tier1UpgradeDescription",
+    ) as HTMLElement,
     onClick: () => handleUpgradeClick(availableUpgrades[0]),
   },
   {
     name: "Hug Strength",
+    description:
+      "Hit the gym to increase the strength of your hugs by 1 bear per click.",
     price: 100,
     bpsIncrease: 0,
     clickIncrease: 1,
@@ -88,12 +124,16 @@ const availableUpgrades: Upgrade[] = [
     upgradePriceDisplay: document.getElementById(
       "tier2UpgradePrice",
     ) as HTMLElement,
+    upgradeDescripton: document.getElementById(
+      "tier2UpgradeDescription",
+    ) as HTMLElement,
     onClick: () => handleUpgradeClick(availableUpgrades[1]),
   },
   {
     name: "Sewing Circle",
-    price: 1000,
-    bpsIncrease: 5,
+    description: "Manipulate a sewing circle into making you 2.5 bps.",
+    price: 500,
+    bpsIncrease: 2.5,
     clickIncrease: 0,
     amount: 0,
     upgradeButton: document.getElementById(
@@ -105,7 +145,52 @@ const availableUpgrades: Upgrade[] = [
     upgradePriceDisplay: document.getElementById(
       "tier3UpgradePrice",
     ) as HTMLElement,
+    upgradeDescripton: document.getElementById(
+      "tier3UpgradeDescription",
+    ) as HTMLElement,
     onClick: () => handleUpgradeClick(availableUpgrades[2]),
+  },
+  {
+    name: "Bear Factory",
+    description: "Open a bear factory to produce 10 bps.",
+    price: 1000,
+    bpsIncrease: 10,
+    clickIncrease: 0,
+    amount: 0,
+    upgradeButton: document.getElementById(
+      "tier4UpgradeButton",
+    ) as HTMLButtonElement,
+    upgradeDisplay: document.getElementById(
+      "tier4UpgradeDisplay",
+    ) as HTMLElement,
+    upgradePriceDisplay: document.getElementById(
+      "tier4UpgradePrice",
+    ) as HTMLElement,
+    upgradeDescripton: document.getElementById(
+      "tier4UpgradeDescription",
+    ) as HTMLElement,
+    onClick: () => handleUpgradeClick(availableUpgrades[3]),
+  },
+  {
+    name: "Fur Exchange",
+    description: "Invest in the black market fur exchange to gain 25 bps.",
+    price: 2000,
+    bpsIncrease: 25,
+    clickIncrease: 0,
+    amount: 0,
+    upgradeButton: document.getElementById(
+      "tier5UpgradeButton",
+    ) as HTMLButtonElement,
+    upgradeDisplay: document.getElementById(
+      "tier5UpgradeDisplay",
+    ) as HTMLElement,
+    upgradePriceDisplay: document.getElementById(
+      "tier5UpgradePrice",
+    ) as HTMLElement,
+    upgradeDescripton: document.getElementById(
+      "tier5UpgradeDescription",
+    ) as HTMLElement,
+    onClick: () => handleUpgradeClick(availableUpgrades[4]),
   },
 ];
 
@@ -124,6 +209,7 @@ function handleUpgradeClick(upgrade: Upgrade) {
 
 availableUpgrades.forEach((upgrade) => {
   upgrade.upgradeButton.addEventListener("click", () => upgrade.onClick());
+  upgrade.upgradeDescripton.textContent = upgrade.description;
 });
 
 if (bearButton && bearDisplay) {
