@@ -4,16 +4,135 @@
   border: 1px solid salmon;
 }
 
+/*upgrade shop styling inspired by: mrpoopers: https://mrpoopers.github.io/D1rich/*/
 body {
-  /*background inspiration: https://kupodupo.github.io/CMPM-121-D1-Incremental-Game/ */
+  /*bg image inspired by kupodupo: https://kupodupo.github.io/CMPM-121-D1-Incremental-Game/*/
   background-image: url("https://images.unsplash.com/photo-1671888801949-f146b8c1a668?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2576");
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
   background-attachment: fixed;
+  color: #fff8f0;
+  font-family: "Comic Sans MS", "Nunito", sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(60, 30, 10, 0.5);
+  z-index: -1;
+}
+
+center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+h1 {
+  color: #ffe6c7;
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+p {
+  color: #fff4e0;
+  margin: 6px 0;
+}
+
+#upgradeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  background: rgba(255, 247, 230, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  padding: 20px;
+  width: min(90%, 360px);
+  margin: 20px auto;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+}
+
+.upgrade {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 220, 180, 0.2);
+  border-radius: 14px;
+  padding: 12px;
+  box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.2);
+  transition: background 0.2s;
+}
+
+.upgrade:hover {
+  background: rgba(255, 220, 180, 0.35);
+}
+
+.upgrade button {
+  width: 100%;
+  background: linear-gradient(180deg, #f4b183, #e89b6f);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  color: #3d2b1f;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.upgrade button:hover:not(:disabled) {
+  background: linear-gradient(180deg, #ffd8a1, #f4b183);
+  transform: scale(1.03);
+}
+
+.upgrade button:active:not(:disabled) {
+  transform: scale(0.97);
+  background: linear-gradient(180deg, #eaa768, #c57a45);
+}
+
+.upgrade button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.upgrade span {
+  font-size: 0.9rem;
   color: #fff;
+  margin-top: 6px;
   text-shadow: 1px 1px 2px #000;
-  font-family: sans-serif;
+}
+
+#bearButton {
+  font-size: 100px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+#bearButton:active {
+  transform: scale(0.9);
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 2rem;
+  }
+  #bearButton {
+    font-size: 80px;
+  }
+  #upgradeContainer {
+    width: 95%;
+    padding: 15px;
+  }
 }
 
 @keyframes bearButtonClick {

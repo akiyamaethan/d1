@@ -44,38 +44,6 @@ bearButton.style.cursor = "pointer";
 bearButton.textContent = "🧸";
 center.appendChild(bearButton);
 
-const section = document.createElement("section");
-
-function createUpgradeElement(
-  id: number,
-  label: string,
-  price: number,
-): HTMLElement {
-  const container = document.createElement("div");
-
-  const button = document.createElement("button");
-  button.id = `tier${id}UpgradeButton`;
-  button.disabled = true;
-  button.innerHTML =
-    `Purchase ${label} for <span id="tier${id}UpgradePrice">${price}</span> bears`;
-  container.appendChild(button);
-
-  const desc = document.createElement("span");
-  desc.id = `tier${id}UpgradeDescription`;
-  container.appendChild(desc);
-
-  return container;
-}
-
-section.appendChild(createUpgradeElement(1, "Autohugger", 10));
-section.appendChild(createUpgradeElement(2, "Increase Hug Strength", 100));
-section.appendChild(createUpgradeElement(3, "Join a Sewing Circle", 500));
-section.appendChild(createUpgradeElement(4, "Open a Bear Factory", 1000));
-section.appendChild(
-  createUpgradeElement(5, "Invest in the Fur Exchange", 2000),
-);
-center.appendChild(section);
-
 const bearP = document.createElement("p");
 bearP.innerHTML = `Bears: <span id="bearDisplay">0</span>`;
 center.appendChild(bearP);
@@ -98,6 +66,47 @@ document.body.appendChild(center);
 
 const bearDisplay = document.getElementById("bearDisplay")!;
 const bpsDisplay = document.getElementById("bpsDisplay")!;
+const upgradeContainer = document.createElement("div");
+
+upgradeContainer.id = "upgradeContainer";
+
+function createUpgradeElement(
+  id: number,
+  label: string,
+  price: number,
+): HTMLElement {
+  const container = document.createElement("div");
+  container.classList.add("upgrade");
+
+  const button = document.createElement("button");
+  button.id = `tier${id}UpgradeButton`;
+  button.disabled = true;
+  button.innerHTML =
+    `Purchase ${label} for <span id="tier${id}UpgradePrice">${price}</span> bears`;
+  container.appendChild(button);
+
+  const desc = document.createElement("span");
+  desc.id = `tier${id}UpgradeDescription`;
+  container.appendChild(desc);
+
+  return container;
+}
+
+upgradeContainer.appendChild(createUpgradeElement(1, "Autohugger", 10));
+upgradeContainer.appendChild(
+  createUpgradeElement(2, "Increase Hug Strength", 100),
+);
+upgradeContainer.appendChild(
+  createUpgradeElement(3, "Join a Sewing Circle", 500),
+);
+upgradeContainer.appendChild(
+  createUpgradeElement(4, "Open a Bear Factory", 1000),
+);
+upgradeContainer.appendChild(
+  createUpgradeElement(5, "Invest in the Fur Exchange", 2000),
+);
+
+center.appendChild(upgradeContainer);
 
 function handleUpgradeClick(upgrade: Upgrade) {
   if (currentBears >= upgrade.price) {
