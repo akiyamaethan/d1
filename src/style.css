@@ -4,6 +4,18 @@
   border: 1px solid salmon;
 }
 
+body {
+  /*background inspiration: https://kupodupo.github.io/CMPM-121-D1-Incremental-Game/ */
+  background-image: url("https://images.unsplash.com/photo-1671888801949-f146b8c1a668?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2576");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #fff;
+  text-shadow: 1px 1px 2px #000;
+  font-family: sans-serif;
+}
+
 @keyframes bearButtonClick {
   0% {
     transform: scale(1);
