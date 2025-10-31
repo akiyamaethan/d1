@@ -1,87 +1,6 @@
 import "./style.css";
 
-const center = document.createElement("center");
-
-const title = document.createElement("h1");
-title.textContent = "Bear Hugger";
-center.appendChild(title);
-
-const subtitle = document.createElement("p");
-subtitle.textContent = "Click (hug) teddy bears to wake them up!";
-center.appendChild(subtitle);
-
-const bearButton = document.createElement("button");
-bearButton.id = "bearButton";
-bearButton.style.fontSize = "100px";
-bearButton.style.background = "none";
-bearButton.style.border = "none";
-bearButton.style.cursor = "pointer";
-bearButton.textContent = "🧸";
-center.appendChild(bearButton);
-
-const section = document.createElement("section");
-
-function createUpgradeElement(
-  id: number,
-  label: string,
-  price: number,
-): HTMLElement {
-  const container = document.createElement("div");
-
-  const button = document.createElement("button");
-  button.id = `tier${id}UpgradeButton`;
-  button.disabled = true;
-  button.innerHTML =
-    `Purchase ${label} for <span id="tier${id}UpgradePrice">${price}</span> bears`;
-  container.appendChild(button);
-
-  const desc = document.createElement("span");
-  desc.id = `tier${id}UpgradeDescription`;
-  container.appendChild(desc);
-
-  return container;
-}
-
-section.appendChild(createUpgradeElement(1, "Autohugger", 10));
-section.appendChild(createUpgradeElement(2, "Increase Hug Strength", 100));
-section.appendChild(createUpgradeElement(3, "Join a Sewing Circle", 500));
-section.appendChild(createUpgradeElement(4, "Open a Bear Factory", 1000));
-section.appendChild(
-  createUpgradeElement(5, "Invest in the Fur Exchange", 2000),
-);
-
-center.appendChild(section);
-
-const bearP = document.createElement("p");
-bearP.innerHTML = `Bears: <span id="bearDisplay">0</span>`;
-center.appendChild(bearP);
-
-const bpsP = document.createElement("p");
-bpsP.innerHTML = `Idle bps: <span id="bpsDisplay">0</span>`;
-center.appendChild(bpsP);
-
-const upgradeDisplayP = document.createElement("p");
-upgradeDisplayP.innerHTML = `
-  🖱️:<span id="tier1UpgradeDisplay">0</span>
-  💪:<span id="tier2UpgradeDisplay">0</span>
-  🧶:<span id="tier3UpgradeDisplay">0</span>
-  🏭:<span id="tier4UpgradeDisplay">0</span>
-  💱:<span id="tier5UpgradeDisplay">0</span>
-`;
-center.appendChild(upgradeDisplayP);
-
-document.body.appendChild(center);
-
-const bearDisplay = document.getElementById("bearDisplay")!;
-const bpsDisplay = document.getElementById("bpsDisplay")!;
-
-let automaticIncrement: number = 0;
-let clickIncrement: number = 1;
-let currentBears: number = 0;
-
-let prevTime = performance.now();
-let currentTime = performance.now();
-
+//Custom types:
 interface Upgrade {
   name: string;
   description: string;
@@ -175,6 +94,90 @@ const availableUpgrades: Upgrade[] = [
   },
 ];
 
+//State vars:
+let automaticIncrement: number = 0;
+let clickIncrement: number = 1;
+let currentBears: number = 0;
+
+let prevTime = performance.now();
+let currentTime = performance.now();
+
+//UI creation:
+const center = document.createElement("center");
+const title = document.createElement("h1");
+title.textContent = "Bear Hugger";
+center.appendChild(title);
+
+const subtitle = document.createElement("p");
+subtitle.textContent = "Click (hug) teddy bears to wake them up!";
+center.appendChild(subtitle);
+
+const bearButton = document.createElement("button");
+bearButton.id = "bearButton";
+bearButton.style.fontSize = "100px";
+bearButton.style.background = "none";
+bearButton.style.border = "none";
+bearButton.style.cursor = "pointer";
+bearButton.textContent = "🧸";
+center.appendChild(bearButton);
+
+const section = document.createElement("section");
+
+function createUpgradeElement(
+  id: number,
+  label: string,
+  price: number,
+): HTMLElement {
+  const container = document.createElement("div");
+
+  const button = document.createElement("button");
+  button.id = `tier${id}UpgradeButton`;
+  button.disabled = true;
+  button.innerHTML =
+    `Purchase ${label} for <span id="tier${id}UpgradePrice">${price}</span> bears`;
+  container.appendChild(button);
+
+  const desc = document.createElement("span");
+  desc.id = `tier${id}UpgradeDescription`;
+  container.appendChild(desc);
+
+  return container;
+}
+
+section.appendChild(createUpgradeElement(1, "Autohugger", 10));
+section.appendChild(createUpgradeElement(2, "Increase Hug Strength", 100));
+section.appendChild(createUpgradeElement(3, "Join a Sewing Circle", 500));
+section.appendChild(createUpgradeElement(4, "Open a Bear Factory", 1000));
+section.appendChild(
+  createUpgradeElement(5, "Invest in the Fur Exchange", 2000),
+);
+
+center.appendChild(section);
+
+const bearP = document.createElement("p");
+bearP.innerHTML = `Bears: <span id="bearDisplay">0</span>`;
+center.appendChild(bearP);
+
+const bpsP = document.createElement("p");
+bpsP.innerHTML = `Idle bps: <span id="bpsDisplay">0</span>`;
+center.appendChild(bpsP);
+
+const upgradeDisplayP = document.createElement("p");
+upgradeDisplayP.innerHTML = `
+  🖱️:<span id="tier1UpgradeDisplay">0</span>
+  💪:<span id="tier2UpgradeDisplay">0</span>
+  🧶:<span id="tier3UpgradeDisplay">0</span>
+  🏭:<span id="tier4UpgradeDisplay">0</span>
+  💱:<span id="tier5UpgradeDisplay">0</span>
+`;
+center.appendChild(upgradeDisplayP);
+
+document.body.appendChild(center);
+
+const bearDisplay = document.getElementById("bearDisplay")!;
+const bpsDisplay = document.getElementById("bpsDisplay")!;
+
+//Event handlers + game logic:
 function handleUpgradeClick(upgrade: Upgrade) {
   if (currentBears >= upgrade.price) {
     currentBears -= upgrade.price;
