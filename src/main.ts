@@ -1,68 +1,79 @@
 import "./style.css";
 
-//Hi Section activity commit
+const center = document.createElement("center");
 
-document.body.innerHTML = `
-  <center>
-  <h1>Bear Hugger</h1>
-  <p>Click (hug) teddy bears to wake them up!</p>
-  <button
-    id="bearButton"
-    style="font-size: 100px; background: none; border: none; cursor: pointer;"
-  >🧸</button>
-  <section>
-  <div>
-    <button
-      id="tier1UpgradeButton"
-      disabled
-    >Purchase Autohugger for <span id="tier1UpgradePrice">10</span> bears</button>
-    <span id="tier1UpgradeDescription"></span>
-  </div>
-  </div>
-    <button
-      id="tier2UpgradeButton"
-      disabled
-    >Increase Hug Strength for <span id="tier2UpgradePrice">100</span> bears</button>
-    <span id="tier2UpgradeDescription"></span>
-  </div>
-  <div>
-    <button
-      id="tier3UpgradeButton"
-      disabled
-    >Join a Sewing Circle for <span id="tier3UpgradePrice">500</span> bears</button>
-    <span id="tier3UpgradeDescription"></span>
-  </div>
-  <button
-      id="tier4UpgradeButton"
-      disabled
-    >Open a Bear Factory for <span id="tier4UpgradePrice">1000</span> bears</button>
-    <span id="tier4UpgradeDescription"></span>
-  </button>
-  <div>
-  <button
-      id="tier5UpgradeButton"
-      disabled
-    >Invest in the Fur Exchange for <span id="tier5UpgradePrice">2000</span> bears</button>
-    <span id="tier5UpgradeDescription"></span>
-  </button>
-  </div>
-  </section>
-  <p>Bears: <span id="bearDisplay">0</span></p>
-  <p>Idle bps: <span id="bpsDisplay">0</span></p>
-  
-  <p>
-    🖱️:<span id="tier1UpgradeDisplay">0</span>
-    💪: <span id="tier2UpgradeDisplay">0</span>
-    🧶: <span id="tier3UpgradeDisplay">0</span>
-    🏭: <span id="tier4UpgradeDisplay">0</span>
-    💱: <span id="tier5UpgradeDisplay">0</span>
-  </p>
-  </center>
-  `;
+const title = document.createElement("h1");
+title.textContent = "Bear Hugger";
+center.appendChild(title);
 
-const bearButton = document.getElementById("bearButton");
-const bearDisplay = document.getElementById("bearDisplay");
-const bpsDisplay = document.getElementById("bpsDisplay");
+const subtitle = document.createElement("p");
+subtitle.textContent = "Click (hug) teddy bears to wake them up!";
+center.appendChild(subtitle);
+
+const bearButton = document.createElement("button");
+bearButton.id = "bearButton";
+bearButton.style.fontSize = "100px";
+bearButton.style.background = "none";
+bearButton.style.border = "none";
+bearButton.style.cursor = "pointer";
+bearButton.textContent = "🧸";
+center.appendChild(bearButton);
+
+const section = document.createElement("section");
+
+function createUpgradeElement(
+  id: number,
+  label: string,
+  price: number,
+): HTMLElement {
+  const container = document.createElement("div");
+
+  const button = document.createElement("button");
+  button.id = `tier${id}UpgradeButton`;
+  button.disabled = true;
+  button.innerHTML =
+    `Purchase ${label} for <span id="tier${id}UpgradePrice">${price}</span> bears`;
+  container.appendChild(button);
+
+  const desc = document.createElement("span");
+  desc.id = `tier${id}UpgradeDescription`;
+  container.appendChild(desc);
+
+  return container;
+}
+
+section.appendChild(createUpgradeElement(1, "Autohugger", 10));
+section.appendChild(createUpgradeElement(2, "Increase Hug Strength", 100));
+section.appendChild(createUpgradeElement(3, "Join a Sewing Circle", 500));
+section.appendChild(createUpgradeElement(4, "Open a Bear Factory", 1000));
+section.appendChild(
+  createUpgradeElement(5, "Invest in the Fur Exchange", 2000),
+);
+
+center.appendChild(section);
+
+const bearP = document.createElement("p");
+bearP.innerHTML = `Bears: <span id="bearDisplay">0</span>`;
+center.appendChild(bearP);
+
+const bpsP = document.createElement("p");
+bpsP.innerHTML = `Idle bps: <span id="bpsDisplay">0</span>`;
+center.appendChild(bpsP);
+
+const upgradeDisplayP = document.createElement("p");
+upgradeDisplayP.innerHTML = `
+  🖱️:<span id="tier1UpgradeDisplay">0</span>
+  💪:<span id="tier2UpgradeDisplay">0</span>
+  🧶:<span id="tier3UpgradeDisplay">0</span>
+  🏭:<span id="tier4UpgradeDisplay">0</span>
+  💱:<span id="tier5UpgradeDisplay">0</span>
+`;
+center.appendChild(upgradeDisplayP);
+
+document.body.appendChild(center);
+
+const bearDisplay = document.getElementById("bearDisplay")!;
+const bpsDisplay = document.getElementById("bpsDisplay")!;
 
 let automaticIncrement: number = 0;
 let clickIncrement: number = 1;
@@ -90,21 +101,15 @@ const availableUpgrades: Upgrade[] = [
     name: "Autohugger",
     description: "Hire a child to hug 0.2 bps for you.",
     price: 10,
-    bpsIncrease: .2,
+    bpsIncrease: 0.2,
     clickIncrease: 0,
     amount: 0,
     upgradeButton: document.getElementById(
       "tier1UpgradeButton",
     ) as HTMLButtonElement,
-    upgradeDisplay: document.getElementById(
-      "tier1UpgradeDisplay",
-    ) as HTMLElement,
-    upgradePriceDisplay: document.getElementById(
-      "tier1UpgradePrice",
-    ) as HTMLElement,
-    upgradeDescripton: document.getElementById(
-      "tier1UpgradeDescription",
-    ) as HTMLElement,
+    upgradeDisplay: document.getElementById("tier1UpgradeDisplay")!,
+    upgradePriceDisplay: document.getElementById("tier1UpgradePrice")!,
+    upgradeDescripton: document.getElementById("tier1UpgradeDescription")!,
     onClick: () => handleUpgradeClick(availableUpgrades[0]),
   },
   {
@@ -118,15 +123,9 @@ const availableUpgrades: Upgrade[] = [
     upgradeButton: document.getElementById(
       "tier2UpgradeButton",
     ) as HTMLButtonElement,
-    upgradeDisplay: document.getElementById(
-      "tier2UpgradeDisplay",
-    ) as HTMLElement,
-    upgradePriceDisplay: document.getElementById(
-      "tier2UpgradePrice",
-    ) as HTMLElement,
-    upgradeDescripton: document.getElementById(
-      "tier2UpgradeDescription",
-    ) as HTMLElement,
+    upgradeDisplay: document.getElementById("tier2UpgradeDisplay")!,
+    upgradePriceDisplay: document.getElementById("tier2UpgradePrice")!,
+    upgradeDescripton: document.getElementById("tier2UpgradeDescription")!,
     onClick: () => handleUpgradeClick(availableUpgrades[1]),
   },
   {
@@ -139,15 +138,9 @@ const availableUpgrades: Upgrade[] = [
     upgradeButton: document.getElementById(
       "tier3UpgradeButton",
     ) as HTMLButtonElement,
-    upgradeDisplay: document.getElementById(
-      "tier3UpgradeDisplay",
-    ) as HTMLElement,
-    upgradePriceDisplay: document.getElementById(
-      "tier3UpgradePrice",
-    ) as HTMLElement,
-    upgradeDescripton: document.getElementById(
-      "tier3UpgradeDescription",
-    ) as HTMLElement,
+    upgradeDisplay: document.getElementById("tier3UpgradeDisplay")!,
+    upgradePriceDisplay: document.getElementById("tier3UpgradePrice")!,
+    upgradeDescripton: document.getElementById("tier3UpgradeDescription")!,
     onClick: () => handleUpgradeClick(availableUpgrades[2]),
   },
   {
@@ -160,15 +153,9 @@ const availableUpgrades: Upgrade[] = [
     upgradeButton: document.getElementById(
       "tier4UpgradeButton",
     ) as HTMLButtonElement,
-    upgradeDisplay: document.getElementById(
-      "tier4UpgradeDisplay",
-    ) as HTMLElement,
-    upgradePriceDisplay: document.getElementById(
-      "tier4UpgradePrice",
-    ) as HTMLElement,
-    upgradeDescripton: document.getElementById(
-      "tier4UpgradeDescription",
-    ) as HTMLElement,
+    upgradeDisplay: document.getElementById("tier4UpgradeDisplay")!,
+    upgradePriceDisplay: document.getElementById("tier4UpgradePrice")!,
+    upgradeDescripton: document.getElementById("tier4UpgradeDescription")!,
     onClick: () => handleUpgradeClick(availableUpgrades[3]),
   },
   {
@@ -181,15 +168,9 @@ const availableUpgrades: Upgrade[] = [
     upgradeButton: document.getElementById(
       "tier5UpgradeButton",
     ) as HTMLButtonElement,
-    upgradeDisplay: document.getElementById(
-      "tier5UpgradeDisplay",
-    ) as HTMLElement,
-    upgradePriceDisplay: document.getElementById(
-      "tier5UpgradePrice",
-    ) as HTMLElement,
-    upgradeDescripton: document.getElementById(
-      "tier5UpgradeDescription",
-    ) as HTMLElement,
+    upgradeDisplay: document.getElementById("tier5UpgradeDisplay")!,
+    upgradePriceDisplay: document.getElementById("tier5UpgradePrice")!,
+    upgradeDescripton: document.getElementById("tier5UpgradeDescription")!,
     onClick: () => handleUpgradeClick(availableUpgrades[4]),
   },
 ];
@@ -202,52 +183,45 @@ function handleUpgradeClick(upgrade: Upgrade) {
     automaticIncrement += upgrade.bpsIncrease;
     clickIncrement += upgrade.clickIncrease;
     upgrade.upgradeDisplay.textContent = upgrade.amount.toString();
-    bpsDisplay!.textContent = automaticIncrement.toFixed(2);
+    bpsDisplay.textContent = automaticIncrement.toFixed(2);
     upgrade.upgradePriceDisplay.textContent = upgrade.price.toString();
   }
 }
 
 availableUpgrades.forEach((upgrade) => {
-  upgrade.upgradeButton.addEventListener("click", () => upgrade.onClick());
+  upgrade.upgradeButton.addEventListener("click", upgrade.onClick);
   upgrade.upgradeDescripton.textContent = upgrade.description;
 });
 
-if (bearButton && bearDisplay) {
-  bearButton.addEventListener("click", () => {
-    bearButton.classList.add("bear-button-animate");
-    bearButton.addEventListener("animationend", () => {
-      bearButton.classList.remove("bear-button-animate");
-    }, { once: true });
-    currentBears += clickIncrement;
-    updateBearDisplay();
-  });
-}
+bearButton.addEventListener("click", () => {
+  bearButton.classList.add("bear-button-animate");
+  bearButton.addEventListener(
+    "animationend",
+    () => bearButton.classList.remove("bear-button-animate"),
+    { once: true },
+  );
+  currentBears += clickIncrement;
+  updateBearDisplay();
+});
 
 function automaticIncrementer(deltaTime: number) {
   currentBears += (deltaTime / 1000) * automaticIncrement;
 }
 
 function updateBearDisplay() {
-  if (bearDisplay) {
-    currentTime = performance.now();
-    const deltaTime = currentTime - prevTime;
-    automaticIncrementer(deltaTime);
-    prevTime = currentTime;
-    bearDisplay.textContent = currentBears.toFixed(2);
-    requestAnimationFrame(updateBearDisplay);
-  }
+  currentTime = performance.now();
+  const deltaTime = currentTime - prevTime;
+  automaticIncrementer(deltaTime);
+  prevTime = currentTime;
+  bearDisplay.textContent = currentBears.toFixed(2);
+  requestAnimationFrame(updateBearDisplay);
 }
 requestAnimationFrame(updateBearDisplay);
 
 function updateUpgradesDisplay() {
   availableUpgrades.forEach((upgrade) => {
-    if (currentBears >= upgrade.price) {
-      upgrade.upgradeButton.disabled = false;
-    } else {
-      upgrade.upgradeButton.disabled = true;
-    }
+    upgrade.upgradeButton.disabled = currentBears < upgrade.price;
   });
   requestAnimationFrame(updateUpgradesDisplay);
 }
-
 requestAnimationFrame(updateUpgradesDisplay);
